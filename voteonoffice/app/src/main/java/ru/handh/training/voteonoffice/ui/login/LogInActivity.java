@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.signup.SignUpActivity;
 import ru.handh.training.voteonoffice.ui.signup.SignUpPresenter;
+import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
+import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
 public class LogInActivity extends BaseActivity implements View.OnClickListener , LogInMvpView{
 
@@ -75,6 +77,9 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
             case R.id.buttonLogin:
                 logInPresenter.userLogin(editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim());
+//
+//                finish();
+//                startActivity(new Intent(this, VoteListActivity.class));
                 break;
         }
     }
@@ -87,25 +92,25 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void showEmailEmptyError() {
-        editTextEmail.setError("Email is required");
+        editTextEmail.setError(getText(R.string.error_need_email));
         editTextEmail.requestFocus();
     }
 
     @Override
     public void showEmailIncorrectError() {
-        editTextEmail.setError("Please enter a valid email");
+        editTextEmail.setError(getText(R.string.error_valid_email));
         editTextEmail.requestFocus();
     }
 
     @Override
     public void showPasswordEmptyError() {
-        editTextPassword.setError("Password is required");
+        editTextPassword.setError(getText(R.string.error_need_password));
         editTextPassword.requestFocus();
     }
 
     @Override
     public void showPasswordLenghtError() {
-        editTextPassword.setError("Minimum lenght of password should be 6");
+        editTextPassword.setError(getText(R.string.error_password_lenght));
         editTextPassword.requestFocus();
     }
 
@@ -126,6 +131,6 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void showLoginSuccess(){
-        Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, VoteListActivity.class));
     }
 }

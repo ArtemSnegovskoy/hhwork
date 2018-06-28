@@ -78,32 +78,32 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void showEmailEmptyError() {
 
-        editTextEmail.setError("Email is required");
+        editTextEmail.setError(getText(R.string.error_need_email));
         editTextEmail.requestFocus();
 
     }
 
     @Override
     public void showEmailIncorrectError() {
-        editTextEmail.setError("Please enter a valid email");
+        editTextEmail.setError(getText(R.string.error_valid_email));
         editTextEmail.requestFocus();
     }
 
     @Override
     public void showPasswordEmptyError() {
-        editTextPassword.setError("Password is required");
+        editTextPassword.setError(getText(R.string.error_need_password));
         editTextPassword.requestFocus();
     }
 
     @Override
     public void showPasswordLenghtError() {
-        editTextPassword.setError("Minimum lenght of password should be 6");
+        editTextPassword.setError(getText(R.string.error_password_lenght));
         editTextPassword.requestFocus();
     }
 
     @Override
     public void showAlredyRegisterError() {
-        Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getText(R.string.error_already_registered), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -118,7 +118,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void showSignUpSuccessful() {
-        Toast.makeText(getApplicationContext(), "Successful Registration", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getText(R.string.registration_success), Toast.LENGTH_SHORT).show();
     }
 
     @Override

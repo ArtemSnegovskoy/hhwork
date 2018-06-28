@@ -18,6 +18,7 @@ public interface LogInMvpView extends MvpView{
     void showLoginError(String errorMessage);
 
     //временный метод - заглушка до введения голосовалок
+    //голосовалки ввели а имя метода менть лень - переписал метод
     void  showLoginSuccess();
 
 }

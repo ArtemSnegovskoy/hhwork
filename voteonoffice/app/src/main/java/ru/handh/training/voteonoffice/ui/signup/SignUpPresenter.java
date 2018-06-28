@@ -54,10 +54,12 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        getMvpView().hideProgressbar();
                         getMvpView().showAlredyRegisterError();
 
                     } else {
                         String errorMessage = task.getException().getMessage();
+                        getMvpView().hideProgressbar();
                         getMvpView().showSignUpFailed(errorMessage);
 
                     }

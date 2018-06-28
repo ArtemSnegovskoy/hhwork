@@ -9,4 +9,32 @@
 
     <string name="empty_ribots">There aren\'t any ribots</string>
     <string name="error_loading_ribots">There was a problem loading the ribots</string>
+
+    <string name="progress_bar_wait">Please wait</string>
+
+    <string name="error_need_email">Email is required</string>
+    <string name="error_valid_email">Please enter a valid email</string>
+    <string name="error_need_password">Password is required</string>
+    <string name="error_password_lenght">Minimum lenght of password should be 6</string>
+    <string name="error_already_registered">You are already registered </string>
+    <string name="registration_success">Successful Registration</string>
+    <string name="error_need_title">Please enter a Title"</string>
+    <string name="error_need_variant">Add variant for creating vote</string>
+    <string name="message_vote_created">Vote Created</string>
+
+    <string name="login">Login</string>
+    <string name="don_t_have_account_sign_up">Don\'t have account? Sign Up</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_login">Already have an account? Login</string>
+    <string name="for_creating_vote_add_title_and_some_variants">For creating vote add title and some variants</string>
+    <string name="description">Description</string>
+    <string name="add_variant">Add Variant</string>
+    <string name="create_vote">Create Vote</string>
+    <string name="add_vote">Add vote</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+
+
 </resources>

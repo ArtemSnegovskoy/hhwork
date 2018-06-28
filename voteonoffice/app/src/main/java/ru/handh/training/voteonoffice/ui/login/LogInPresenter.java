@@ -1,5 +1,7 @@
 package ru.handh.training.voteonoffice.ui.login;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Patterns;
 import android.view.View;
@@ -14,6 +16,7 @@ import javax.inject.Inject;
 
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.base.BasePresenter;
+import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
 public class LogInPresenter extends BasePresenter<LogInMvpView> {
 
@@ -58,12 +61,6 @@ public class LogInPresenter extends BasePresenter<LogInMvpView> {
 
                     getMvpView().showLoginSuccess();
 
-
-                    //пока не реализованы голосовалки делаем заглушку
-                    // finish();
-                    //Intent intent = new Intent(LogInActivity.this, VotesActivity.class);
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //startActivity(intent);
                 } else {
                     String errorMessage = task.getException().getMessage();
                     getMvpView().showLoginError(errorMessage);

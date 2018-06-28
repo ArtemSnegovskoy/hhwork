@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
+        <!--<activity android:name=".ui.login.LogInActivity"/>-->
         <activity android:name=".ui.login.LogInActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -21,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity android:name=".ui.votecreate.VoteCreateActivity"/>
+        <activity android:name=".ui.voteslist.VoteListActivity"/>
         <service android:name=".data.SyncService"/>
 
         <!--<receiver-->
