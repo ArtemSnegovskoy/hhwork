@@ -60,10 +60,9 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
         if (firebaseAuth.getCurrentUser() != null) {
             //временная заглушка до появления списка голосований
-            Toast.makeText(getApplicationContext(), "Запомнили логин", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Запомнили логин", Toast.LENGTH_SHORT).show();
 
-            //finish();
-            // startActivity(new Intent(this, VotesActivity.class));
+            startActivity(new Intent(this, VoteListActivity.class));
         }
     }
 

@@ -77,7 +77,6 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
 
                                 Vote vote = d.toObject(Vote.class);
                                 votesList.add(vote);
-                                votesList.
 
                             }
 
