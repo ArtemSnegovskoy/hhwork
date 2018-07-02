@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textViewAnnotation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="@string/for_creating_vote_add_title_and_some_variants" />
+    
+    <EditText
+        android:id="@+id/editTitle"
+        android:hint="@string/title"
+        android:gravity="center"
+        android:layout_below="@id/textViewAnnotation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"/>
+    <EditText
+        android:id="@+id/editDescription"
+        android:hint="@string/description"
+        android:gravity="center"
+        android:layout_below="@id/editTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"/>
+    <Button
+        android:id="@+id/buttonAddVariant"
+        android:layout_below="@+id/editDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_variant"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewVariants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonAddVariant"
+        android:scrollbars="vertical">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+        <Button
+            android:id="@+id/buttonCreateVote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_vote" />
+    </RelativeLayout>
+
+
+
+    
+    
+</RelativeLayout>

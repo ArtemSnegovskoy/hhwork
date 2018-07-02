@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "293636638785",
+    "firebase_url": "https://voteonoffice-d506f.firebaseio.com",
+    "project_id": "voteonoffice-d506f",
+    "storage_bucket": "voteonoffice-d506f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293636638785:android:c5b36f083606a566",
+        "android_client_info": {
+          "package_name": "ru.handh.training.voteonoffice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293636638785-mfk996m3retj5rioisie5p7gpaf8krln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.handh.training.voteonoffice",
+            "certificate_hash": "1435dd88be3ab08d17b2efe65aa80b971838e2fc"
+          }
+        },
+        {
+          "client_id": "293636638785-7an7jqosko7n6omvtec1qs15pr78fkd5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "293636638785-7an7jqosko7n6omvtec1qs15pr78fkd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkdU2ZTiJTvI3mUJRWdYwi6Oim0kuCglE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293636638785-7an7jqosko7n6omvtec1qs15pr78fkd5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
