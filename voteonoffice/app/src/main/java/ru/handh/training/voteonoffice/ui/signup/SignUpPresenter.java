@@ -10,9 +10,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import ru.handh.training.voteonoffice.data.usermodel.User;
+import ru.handh.training.voteonoffice.data.usermodel.UserVotes;
 import ru.handh.training.voteonoffice.ui.base.BasePresenter;
 import ru.handh.training.voteonoffice.ui.signup.SignUpMvpView;
 
@@ -21,7 +28,7 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
     public SignUpPresenter() {
     }
 
-    public void registerUser(String email, String password){
+    public void registerUser(final String email, String password){
 
             if (email.isEmpty()) {
                 getMvpView().showEmailEmptyError();
@@ -51,6 +58,11 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
                 getMvpView().hideProgressbar();
                 if (task.isSuccessful()) {
                     getMvpView().showSignUpSuccessful();
+
+
+                    addDbUser(email);
+
+
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -70,6 +82,25 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
 
 
 
+
+
+    }
+
+    public void addDbUser (String userEmail) {
+        // при создании нового пользователя добавляем его в таблицу Users для раздачи ролей и запоминания голосований
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // по умолчанию пользователь не админ
+        boolean userRole = false;
+        List<UserVotes> userVotesList = new ArrayList<>();
+
+        User user = new User(userEmail, userRole, userVotesList);
+
+        CollectionReference dbUsers = firebaseFirestore.collection("Users");
+
+//        dbUsers.add(user);
+        // добавляем юзера, вместо айди емейл
+        dbUsers.document(userEmail).set(user);
 
 
 

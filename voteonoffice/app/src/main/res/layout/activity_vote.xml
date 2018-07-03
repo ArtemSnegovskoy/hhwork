@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewVoteActivityTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Vote Title"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart"
+        android:layout_below="@id/textViewVoteActivityTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </com.github.mikephil.charting.charts.PieChart>
+
+    <TextView
+        android:id="@+id/textViewVoteActivityDescription"
+        android:layout_below="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Vote Description"/>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewVariantList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewVoteActivityDescription"
+        android:scrollbars="vertical">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+
+        android:id="@+id/buttonVote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vote"
+        android:layout_below="@+id/recyclerViewVariantList"
+        />
+
+
+
+</RelativeLayout>

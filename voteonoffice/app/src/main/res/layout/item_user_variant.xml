@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:padding="6dip" >
+
+        <ImageView
+            android:id="@+id/imageVariantImg"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:padding="6dp"
+            android:src="@drawable/ic_add_a_photo_black_36dp"
+            />
+
+
+        <EditText
+            android:id="@+id/editTextVariant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageVariantImg"
+            android:padding="6dp"
+            android:layout_toLeftOf="@+id/checkboxVariat"
+            android:layout_toRightOf="@+id/imageVariantImg"
+            />
+
+        <CheckBox
+            android:id="@+id/checkboxVariat"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="12dp"
+            android:paddingLeft="24dp"
+            android:layout_alignParentRight="true"
+            android:button="@null"
+            android:background="?android:attr/listChoiceIndicatorMultiple"/>
+
+    </RelativeLayout>
+

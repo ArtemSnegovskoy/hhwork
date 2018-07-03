@@ -35,6 +35,9 @@
     <string name="add_vote">Add vote</string>
     <string name="date">Date</string>
     <string name="title">Title</string>
+    <string name="vote">Vote</string>
+    <string name="edit_user_role">Edit User role</string>
+    <string name="change_role">Change role</string>
 
 
 </resources>

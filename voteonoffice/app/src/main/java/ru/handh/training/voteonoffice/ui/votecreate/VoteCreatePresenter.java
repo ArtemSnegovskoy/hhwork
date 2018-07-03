@@ -45,7 +45,10 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
         // тут мы добавляем недостающие данные для конструктора
 
         // UUID мб заменить на Long uuid = UUID.randomUUID().getMostSignificantBits()
-        String voteUUID = UUID.randomUUID().toString().replaceAll("-", "");
+
+        //String voteUUID = UUID.randomUUID().toString().replaceAll("-", "");
+        String voteUUID = UUID.randomUUID().toString();
+
 
 
         if (voteDescription == null) {
@@ -60,20 +63,38 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
 
         getMvpView().showProgressbar();
 
-        dbVotes.add(vote).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        // этот способ записи в базу данных генерирует айди voteUUID по которому я могу получить документ
+        dbVotes.document(voteUUID).set(vote).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
+            public void onSuccess(Void aVoid) {
                 getMvpView().hideProgressbar();
                 getMvpView().showAddVoteSuccess();
+
             }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        getMvpView().hideProgressbar();
-                        getMvpView().showAddVoteFailed(e.getMessage());
-                    }
-                });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                getMvpView().hideProgressbar();
+                getMvpView().showAddVoteFailed(e.getMessage());
+
+            }
+        });
+            // этот способ записи в базу гененрирует для докуменат свой айди, которого я не знаю
+//        dbVotes.add(vote)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//            @Override
+//            public void onSuccess(DocumentReference documentReference) {
+//                getMvpView().hideProgressbar();
+//                getMvpView().showAddVoteSuccess();
+//            }
+//        })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        getMvpView().hideProgressbar();
+//                        getMvpView().showAddVoteFailed(e.getMessage());
+//                    }
+//                });
 
     }
 

@@ -6,6 +6,8 @@ import ru.handh.training.voteonoffice.injection.module.ActivityModule;
 import ru.handh.training.voteonoffice.ui.login.LogInActivity;
 import ru.handh.training.voteonoffice.ui.main.MainActivity;
 import ru.handh.training.voteonoffice.ui.signup.SignUpActivity;
+import ru.handh.training.voteonoffice.ui.userrole.UserRoleActivity;
+import ru.handh.training.voteonoffice.ui.voteactivity.VoteActivity;
 import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
 import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
@@ -23,4 +25,8 @@ public interface ActivityComponent {
 
     void inject(VoteCreateActivity voteCreateActivity);
     void inject(VoteListActivity voteListActivity);
+
+    void inject(VoteActivity voteActivity);
+    void inject(UserRoleActivity userRoleActivity);
+
 }

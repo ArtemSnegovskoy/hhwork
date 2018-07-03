@@ -24,6 +24,10 @@
         </activity>
         <activity android:name=".ui.votecreate.VoteCreateActivity"/>
         <activity android:name=".ui.voteslist.VoteListActivity"/>
+        <activity android:name=".ui.voteactivity.VoteActivity"/>
+        <activity android:name=".ui.userrole.UserRoleActivity"/>
+
+
         <service android:name=".data.SyncService"/>
 
         <!--<receiver-->

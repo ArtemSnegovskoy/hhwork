@@ -4,6 +4,12 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/buttonEditUserRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_user_role"/>
+
+    <Button
         android:id="@+id/buttonAddVote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +18,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewVoteList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>

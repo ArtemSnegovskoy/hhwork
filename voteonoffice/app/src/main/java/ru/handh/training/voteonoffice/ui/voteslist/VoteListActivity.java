@@ -13,6 +13,8 @@ import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,17 +29,23 @@ import ru.handh.training.voteonoffice.R;
 
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
+import ru.handh.training.voteonoffice.ui.login.LogInActivity;
+import ru.handh.training.voteonoffice.ui.voteactivity.VoteActivity;
 import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
 
-public class VoteListActivity extends BaseActivity implements View.OnClickListener, VoteListMvpView {
+public class VoteListActivity extends BaseActivity implements View.OnClickListener, VoteListMvpView, VoteListAdapter.VoteClickListener {
+
+    public static final String EXTRA_VOTE_ID = "ru.handh.training.voteonoffice.ui.vote";
 
     @Inject VoteListPresenter voteListPresenter;
     VoteListAdapter voteListAdapter;
 
     RecyclerView recyclerViewVotes;
-    Button buttonAddVote;
+    Button buttonAddVote, buttonEditUserRole;
     List<Vote> votesList;
     MaterialDialog dialogProgressBar;
+
+    FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -48,7 +56,9 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_vote_list);
 
         buttonAddVote = findViewById(R.id.buttonAddVote);
+        buttonEditUserRole= findViewById(R.id.buttonEditUserRole);
         buttonAddVote.setOnClickListener(this);
+        buttonEditUserRole.setOnClickListener(this);
 
         recyclerViewVotes = findViewById(R.id.recyclerViewVoteList);
         recyclerViewVotes.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +66,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         votesList = new ArrayList<>();
 
         voteListAdapter = new VoteListAdapter(this, votesList);
+        voteListAdapter.setClickListener(this);
         recyclerViewVotes.setAdapter(voteListAdapter);
 
         showProgressbar();
@@ -99,8 +110,25 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonAddVote:
+
                 finish();
                 startActivity(new Intent(this, VoteCreateActivity.class));
+
+                break;
+
+            case R.id.buttonEditUserRole:
+
+
+                FirebaseAuth.getInstance().signOut();
+
+                finish();
+                startActivity(new Intent(this, LogInActivity.class));
+                break;
+        }
+
+
 
     }
 
@@ -132,4 +160,16 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    @Override
+    public void onItemClick(Vote vote) {
+
+        String voteUUID = vote.getVoteUUID();
+
+        Intent intent = new Intent(VoteListActivity.this, VoteActivity.class);
+        //intent.putExtra(EXTRA_VOTE_ID, voteUUID);
+
+        intent.putExtra("vote", vote);
+
+        startActivity(intent);
+    }
 }

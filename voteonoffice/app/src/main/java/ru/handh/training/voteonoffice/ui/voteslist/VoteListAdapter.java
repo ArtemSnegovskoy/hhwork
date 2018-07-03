@@ -1,6 +1,7 @@
 package ru.handh.training.voteonoffice.ui.voteslist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +17,27 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
+import ru.handh.training.voteonoffice.ui.voteactivity.VoteActivity;
 
 public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteListViewHolder> {
 
     private List<Vote> votesList;
     private Context context;
 
+    private VoteClickListener clickListener;
+
     public VoteListAdapter(Context context, List<Vote> votesList) {
         this.context = context;
         this.votesList = votesList;
     }
 
-    public class VoteListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class VoteListViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageVoteStatus;
         TextView textViewVoteDate, textViewVoteTitle;
 
         public VoteListViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
 
             imageVoteStatus = itemView.findViewById(R.id.imageVoteStatus);
             textViewVoteDate = itemView.findViewById(R.id.textViewVoteDate);
@@ -42,7 +45,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
 
         }
 
-        public void bindVote(int position, Vote vote) {
+        public void bindVote(int position, final Vote vote) {
 
 
             if (vote.isVoteStatus() == true){
@@ -52,14 +55,22 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
             textViewVoteDate.setText(vote.getVoteDate());
             textViewVoteTitle.setText(vote.getVoteTitle());
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null) {
+                        clickListener.onItemClick(vote);
+                    }
+
+                }
+            });
+
+
+
         }
 
-
-        @Override
-        public void onClick(View v) {
-
-        }
     }
+
 
     @Override
     public VoteListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,5 +88,15 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
     @Override
     public int getItemCount() {
         return votesList.size();
+    }
+
+    public interface VoteClickListener {
+
+        void onItemClick (Vote vote);
+
+    }
+
+    public void setClickListener(VoteClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }
