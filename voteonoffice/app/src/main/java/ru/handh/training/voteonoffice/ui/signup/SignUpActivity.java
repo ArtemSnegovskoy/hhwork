@@ -65,6 +65,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             case R.id.buttonSignUp:
                 signUpPresenter.registerUser(editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim());
                // registerUser();
+                //signUpPresenter.addDbUser(editTextEmail.getText().toString().trim());
                 break;
 
             case R.id.textViewLogin:

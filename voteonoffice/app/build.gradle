@@ -170,6 +170,8 @@ dependencies {
 
     //other
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 // Log out test results to console
