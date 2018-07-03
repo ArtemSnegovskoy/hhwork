@@ -2,6 +2,7 @@ package ru.handh.training.voteonoffice;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -11,7 +12,7 @@ import ru.handh.training.voteonoffice.injection.component.ApplicationComponent;
 import ru.handh.training.voteonoffice.injection.component.DaggerApplicationComponent;
 import ru.handh.training.voteonoffice.injection.module.ApplicationModule;
 
-public class BoilerplateApplication extends Application  {
+public class BoilerplateApplication extends MultiDexApplication {
 
     ApplicationComponent mApplicationComponent;
 
