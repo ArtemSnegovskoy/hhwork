@@ -8,9 +8,9 @@ public class VoteVariant implements Parcelable{
     private int variantId;
     private String variantImgURL;
     private String variantName;
-    //private boolean variantVoteStatus;
+    // теперь эта переменная работает как счетчик, но база может обновлять только раз в секунду, нужно бить на осколки
+    // как в статье https://firebase.google.com/docs/firestore/solutions/counters
     private int variantVoteStatus;
-     //заменить булевое значение на инт для подсчета % в голосовании
 
     public VoteVariant(int variantId, String variantName, String variantImgURL, int variantVoteStatus) {
         this.variantId = variantId;

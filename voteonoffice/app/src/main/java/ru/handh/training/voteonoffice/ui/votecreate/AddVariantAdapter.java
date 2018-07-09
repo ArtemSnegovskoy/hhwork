@@ -46,12 +46,12 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
 
 
         public void bindVariant(int position, VoteVariant voteVariant) {
-
+            // введеный в поле текст при добавлении варианта заменяется на 1 2 3 исправить
             editTextVariant = itemView.findViewById(R.id.editTextVariant);
             mVoteVariant = voteVariant;
-            String variantPosition = String.valueOf(position + 1);
+            //String variantPosition = String.valueOf(position + 1) + editTextVariant.getText().toString();
 
-            editTextVariant.setText(variantPosition);
+            //editTextVariant.setText(variantPosition);
             voteVariant.setVariantId(position + 1);
             voteVariant.setVariantName(editTextVariant.getText().toString().trim());
 

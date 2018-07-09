@@ -2,28 +2,16 @@ package ru.handh.training.voteonoffice.ui.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.login.LogInActivity;
-import ru.handh.training.voteonoffice.ui.main.MainActivity;
-import ru.handh.training.voteonoffice.ui.signup.SignUpMvpView;
-import ru.handh.training.voteonoffice.ui.signup.SignUpPresenter;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-
-import javax.inject.Inject;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener , SignUpMvpView{
 
@@ -69,7 +57,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.textViewLogin:
-                finish();
                 startActivity(new Intent(this, LogInActivity.class));
                 break;
         }

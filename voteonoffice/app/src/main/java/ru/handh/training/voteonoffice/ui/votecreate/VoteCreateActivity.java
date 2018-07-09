@@ -1,31 +1,24 @@
 package ru.handh.training.voteonoffice.ui.votecreate;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Time;
 import java.util.Calendar;
-
-import ru.handh.training.voteonoffice.R;
 
 import javax.inject.Inject;
 
+import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.data.votesmodel.VoteVariant;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;

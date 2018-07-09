@@ -20,7 +20,8 @@
         android:layout_below="@id/textViewAnnotation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp"
+        android:maxLength="20"/>
     <EditText
         android:id="@+id/editDescription"
         android:hint="@string/description"
@@ -28,7 +29,8 @@
         android:layout_below="@id/editTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp"
+        android:maxLength="100"/>
     <Button
         android:id="@+id/buttonAddVariant"
         android:layout_below="@+id/editDescription"

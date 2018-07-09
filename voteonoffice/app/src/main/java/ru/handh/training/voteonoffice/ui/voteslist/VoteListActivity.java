@@ -14,19 +14,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import ru.handh.training.voteonoffice.R;
-
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.login.LogInActivity;
@@ -34,8 +33,6 @@ import ru.handh.training.voteonoffice.ui.voteactivity.VoteActivity;
 import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
 
 public class VoteListActivity extends BaseActivity implements View.OnClickListener, VoteListMvpView, VoteListAdapter.VoteClickListener {
-
-    public static final String EXTRA_VOTE_ID = "ru.handh.training.voteonoffice.ui.vote";
 
     @Inject VoteListPresenter voteListPresenter;
     VoteListAdapter voteListAdapter;
@@ -72,8 +69,8 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         showProgressbar();
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-        firebaseFirestore.collection("Votes").get()
+        // отсортировал голосования, самые новые - наверху
+        firebaseFirestore.collection("Votes").orderBy("voteDate").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -90,7 +87,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
                                 votesList.add(vote);
 
                             }
-
+                            Collections.reverse(votesList);
                             voteListAdapter.notifyDataSetChanged();
 
                         }
@@ -163,10 +160,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onItemClick(Vote vote) {
 
-        String voteUUID = vote.getVoteUUID();
-
         Intent intent = new Intent(VoteListActivity.this, VoteActivity.class);
-        //intent.putExtra(EXTRA_VOTE_ID, voteUUID);
 
         intent.putExtra("vote", vote);
 

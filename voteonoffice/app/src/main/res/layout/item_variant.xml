@@ -24,7 +24,7 @@
         android:padding="6dp"
         android:layout_toLeftOf="@+id/imageDeleteVariant"
         android:layout_toRightOf="@+id/imageVariantImg"
-         />
+        android:maxLength="100"/>
 
     <ImageView
         android:id="@+id/imageDeleteVariant"

@@ -38,6 +38,7 @@
     <string name="vote">Vote</string>
     <string name="edit_user_role">Edit User role</string>
     <string name="change_role">Change role</string>
+    <string name="error_select_var">Please select variant</string>
 
 
 </resources>

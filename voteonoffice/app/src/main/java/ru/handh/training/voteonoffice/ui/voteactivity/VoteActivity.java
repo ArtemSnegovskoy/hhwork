@@ -1,21 +1,19 @@
 package ru.handh.training.voteonoffice.ui.voteactivity;
 
-import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.PieChart;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -23,19 +21,20 @@ import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
 import ru.handh.training.voteonoffice.data.votesmodel.VoteVariant;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
-import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
 
 public class VoteActivity extends BaseActivity implements View.OnClickListener, VoteMvpView {
 
     @Inject VotePresenter votePresenter;
+    VoteAdapter voteAdapter;
 
     PieChart chart;
     RecyclerView recyclerViewVariantList;
     Button buttonVote;
     Vote vote;
     TextView textViewVoteActivityTitle, textViewVoteActivityDescription;
-    List<VoteVariant> mVoteVariants;
+    List<VoteVariant> voteVariantsList;
+    MaterialDialog dialogProgressBar;
 
 
     @Override
@@ -59,12 +58,21 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
 
         votePresenter.initItemVote(vote);
 
-        // написать адаптер и логику голосования 
-
+        voteVariantsList = vote.getVoteVariants();
+        voteAdapter = new VoteAdapter(this, voteVariantsList);
+        recyclerViewVariantList.setAdapter(voteAdapter);
+        recyclerViewVariantList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public void onClick(View v) {
+
+        if (voteAdapter.checkBoxChekedStatus()){
+            votePresenter.voteForVariant(vote, voteAdapter.checkBoxSelected);
+        } else {
+            showErrorVote();
+        }
+
 
     }
 
@@ -82,4 +90,42 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
         textViewVoteActivityDescription.setText(voteDescription);
 
     }
+
+    @Override
+    public void showErrorVote() {
+        Toast.makeText(this, R.string.error_select_var, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showTransactionError(String errorTransaction) {
+        Toast.makeText(this, errorTransaction, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgressbar() {
+
+        if (dialogProgressBar == null) {
+
+
+            dialogProgressBar = new MaterialDialog.Builder(this)
+                    .content(R.string.progress_bar_wait)
+                    .progress(true, 0)
+                    .contentGravity(GravityEnum.CENTER)
+                    .widgetColor(Color.RED)
+                    .cancelable(false)
+                    .build();
+        }
+        dialogProgressBar.show();
+    }
+
+    @Override
+    public void hideProgressbar() {
+
+        if (dialogProgressBar != null && dialogProgressBar.isShowing()) {
+            dialogProgressBar.dismiss();
+        }
+    }
+
+
+
 }
