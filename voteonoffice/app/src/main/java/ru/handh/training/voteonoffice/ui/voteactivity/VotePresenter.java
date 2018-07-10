@@ -3,6 +3,7 @@ package ru.handh.training.voteonoffice.ui.voteactivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,22 +30,22 @@ import ru.handh.training.voteonoffice.ui.base.BasePresenter;
 public class VotePresenter extends BasePresenter<VoteMvpView> {
 
 
-    @Inject public VotePresenter() {}
+    @Inject
+    public VotePresenter() {
+    }
 
     public void initItemVote(Vote vote) {
 
         String voteTitle;
-        if (vote.getVoteTitle() == null){
+        if (vote.getVoteTitle() == null) {
             voteTitle = "";
         } else {
             voteTitle = vote.getVoteTitle();
         }
 
-
-
         String voteDescription;
 
-        if (vote.getVoteDescription() == null){
+        if (vote.getVoteDescription() == null) {
             voteDescription = "";
         } else {
             voteDescription = vote.getVoteDescription();
@@ -55,226 +57,186 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
 
     }
 
-    public void voteForVariant(final Vote vote, final int votedVariantID){
-
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference currentVoteDocRef = db
-                .collection("Votes").document(vote.getVoteUUID());
+    public void voteForVariant(final Vote vote, final int votedVariantID) {
 
         getMvpView().showProgressbar();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.runTransaction(new Transaction.Function<Void>() {
+
+            @Nullable
             @Override
-            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+
+                DocumentReference currentVoteDocRef = db
+                        .collection("Votes").document(vote.getVoteUUID());
                 // пишем данные в  Votes
                 Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
                 List<VoteVariant> currentVoteVAriants = currentVote.getVoteVariants();
                 VoteVariant currentVotedVariant = currentVoteVAriants.get(votedVariantID);
                 currentVotedVariant.setVariantVoteStatus(currentVotedVariant.getVariantVoteStatus() + 1);
 
+                //теперь пишем в юзерс
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                DocumentReference currentUserRef = db.collection("Users")
+                        .document(currentFirebaseUser.getEmail());
 
+                User currentUser = transaction.get(currentUserRef).toObject(User.class);
+                //получаем текущий список голосований
+                List<UserVotes> currentUserVotes = currentUser.getUserVotesList();
+                // создаем новый объект
+                UserVotes currentUserVote = new UserVotes(vote.getVoteUUID(), votedVariantID);
+                // пишем новую строку юзеру в список его голосований
+                currentUserVotes.add(currentUserVote);
 
+                transaction.set(currentUserRef, currentUser);
                 transaction.set(currentVoteDocRef, currentVote);
 
                 return null;
             }
-            //добавить слушатель и в случае успеха дописать всякое юзеру
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                getVoteResult(vote);
 
-                db.runTransaction(new Transaction.Function<Void>() {
-                    @Override
-                    public Void apply(Transaction transaction) throws FirebaseFirestoreException {
-                        // пишем данные в  Users
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        String voteUUID = vote.getVoteUUID();
-                        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        DocumentReference currentUserRef = db.collection("Users")
-                                .document(currentFirebaseUser.getEmail());
-                        User currentUser = transaction.get(currentUserRef).toObject(User.class);
-                        //получаем текущий список голосований
-                        List<UserVotes> currentUserVotes = currentUser.getUserVotesList();
-                        // создаем новый объект
-                        UserVotes currentUserVote = new UserVotes(vote.getVoteUUID(), votedVariantID);
-                        // добавляем новый объект в список проверяя на совпадение UUID
-                        if (currentUserVotes.isEmpty()){
-                            currentUserVotes.add(currentUserVote);
-                        } else {
-                            for (UserVotes userVotes : currentUserVotes) {
-                                // для сравнения строк использую equals
-                                if (userVotes.getVoteUUID().equals(currentUserVote.getVoteUUID())) {
-                                    currentUserVotes.set(currentUserVotes.indexOf(userVotes), currentUserVote);
-                                    break;
-                                } else {
-                                    currentUserVotes.add(currentUserVote);
-                                }
-                            }
-
-                        }
-
-                        transaction.set(currentUserRef, currentUser);
-                        return null;
-
-                    }
-
-                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        getMvpView().hideProgressbar();
-
-                        //TODO дописать метод получающий показывающий результаты голосования
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        getMvpView().hideProgressbar();
-                        String errorTransaction = e.getMessage();
-                        getMvpView().showTransactionError(errorTransaction);
-                    }
-                });
+                getMvpView().hideProgressbar();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 getMvpView().hideProgressbar();
-                String errorTransaction = e.getMessage();
-                getMvpView().showTransactionError(errorTransaction);
+                getMvpView().showTransactionError(e.getMessage());
             }
         });
 
     }
-        // в этом методе вычитаем единицу из старого варианта голосования, и доавляем единицу к новому
-        public void updateUserVotes(Vote vote, int votedVariantID){
+
+    // в этом методе вычитаем единицу из старого варианта голосования, и доавляем единицу к новому
+    public void updateUserVotes(Vote vote, int votedVariantID) {
 
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            getMvpView().showProgressbar();
+        getMvpView().showProgressbar();
 
-            db.runTransaction(new Transaction.Function<Void>() {
+        db.runTransaction(new Transaction.Function<Void>() {
 
-                @Nullable
-                @Override
-                public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+            @Nullable
+            @Override
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
 
-                    int oldVariantIndex = 0;
-                    int oldVariantId = 0;
+                int oldVariantIndex = 0;
+                int oldVariantId = 0;
 
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    String voteUUID = vote.getVoteUUID();
-                    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String voteUUID = vote.getVoteUUID();
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                    DocumentReference currentUserRef = db.collection("Users")
-                            .document(currentFirebaseUser.getEmail());
-                    User currentUser = transaction.get(currentUserRef).toObject(User.class);
-                    //получаем текущий список голосований
-                    List<UserVotes> currentUserVotes = currentUser.getUserVotesList();
-                    // надо найти старое голосование через UUID и получить оттуда номер варианта
+                DocumentReference currentUserRef = db.collection("Users")
+                        .document(currentFirebaseUser.getEmail());
+                User currentUser = transaction.get(currentUserRef).toObject(User.class);
+                //получаем текущий список голосований
+                List<UserVotes> currentUserVotes = currentUser.getUserVotesList();
+                // надо найти старое голосование через UUID и получить оттуда номер варианта
 
-                    for (UserVotes userVotes : currentUserVotes) {
-                        if (userVotes.getVoteUUID().equals(voteUUID)) {
-                            oldVariantIndex = currentUserVotes.indexOf(userVotes);
-                            oldVariantId = userVotes.getVoteVariantID();
-                            break;
-                        }
-                    }
-                    UserVotes oldVariant = currentUserVotes.get(oldVariantIndex);
+                DocumentReference currentVoteDocRef = db
+                        .collection("Votes").document(voteUUID);
+                Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
 
-                    UserVotes currentUserVote = new UserVotes(vote.getVoteUUID(), votedVariantID);
-                    // добавляем новый объект в список проверяя на совпадение UUID
-                    if (currentUserVotes.isEmpty()){
-                        currentUserVotes.add(currentUserVote);
-                    } else {
-                        for (UserVotes userVotes : currentUserVotes) {
+                boolean hasUUID = false;
 
-                            if (userVotes.getVoteUUID().equals(currentUserVote.getVoteUUID())) {
-                                currentUserVotes.set(currentUserVotes.indexOf(userVotes), currentUserVote);
-                                break;
-                            } else {
-                                currentUserVotes.add(currentUserVote);
-                            }
-                        }
+                for (UserVotes userVotes : currentUserVotes) {
+                    if (userVotes.getVoteUUID().equals(voteUUID)) {
+                        hasUUID = true;
+                        oldVariantIndex = currentUserVotes.indexOf(userVotes);
+                        oldVariantId = userVotes.getVoteVariantID();
+                        break;
 
                     }
 
-
-                    DocumentReference currentVoteDocRef = db
-                            .collection("Votes").document(voteUUID);
-
-                    Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
-
-                    List<VoteVariant> currentVoteVAriants = currentVote.getVoteVariants();
-
-                    VoteVariant oldVotedVariant = currentVoteVAriants.get(oldVariantId);
-
-                    // не вычитает проверить почему
-                    // исправил, теперь добавляет,причем дважды, отлично!
-
-                    oldVotedVariant.setVariantVoteStatus(oldVotedVariant.getVariantVoteStatus() - 1);
-
-                    // вычитаем в этой транзакции,
-                    //VoteVariant currentVotedVariant = currentVoteVAriants.get(votedVariantID);
-                    //currentVotedVariant.setVariantVoteStatus(currentVotedVariant.getVariantVoteStatus() + 1);
-
-
-                    transaction.set(currentUserRef, currentUser);
-                    transaction.set(currentVoteDocRef, currentVote);
-                    //transaction.set(currentUserRef, currentUser);
-                    return null;
+                    if (hasUUID) {
+                        // вычитаем старый вариант голосования
+                        UserVotes oldVariant = currentUserVotes.get(oldVariantIndex);
+                        List<VoteVariant> currentVoteVariants = currentVote.getVoteVariants();
+                        VoteVariant oldVotedVariant = currentVoteVariants.get(oldVariantId);
+                        oldVotedVariant.setVariantVoteStatus(oldVotedVariant.getVariantVoteStatus() - 1);
+                    }
                 }
-            }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-
-                    db.runTransaction(new Transaction.Function<Void>() {
-                        // тут нас надо только обновить Votes добавив новое значение
-                        @Nullable
-                        @Override
-                        public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            String voteUUID = vote.getVoteUUID();
-
-                            DocumentReference currentVoteDocRef = db
-                                    .collection("Votes").document(vote.getVoteUUID());
-                            Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
-                            List<VoteVariant> currentVoteVAriants = currentVote.getVoteVariants();
-
-                            VoteVariant currentVotedVariant = currentVoteVAriants.get(votedVariantID);
-                            currentVotedVariant.setVariantVoteStatus(currentVotedVariant.getVariantVoteStatus() + 1);
 
 
-                            transaction.set(currentVoteDocRef, currentVote);
+                UserVotes currentUserVote = new UserVotes(vote.getVoteUUID(), votedVariantID);
+                // добавляем новый объект в список и ищем совпадение UUID, его надо заменить
 
-                            return null;
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //TODO добавить метод показывающий результат голосования
-                            getMvpView().hideProgressbar();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            getMvpView().showTransactionError(e.getMessage());
-                        }
-                    });
 
+                for (UserVotes userVotes : currentUserVotes) {
+                    if (userVotes.getVoteUUID().equals(currentUserVote.getVoteUUID())) {
+                        currentUserVotes.set(currentUserVotes.indexOf(userVotes), currentUserVote);
+                        break;
+                    }
 
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    getMvpView().showTransactionError(e.getMessage());
-                }
-            });
 
-        }
+
+                transaction.set(currentUserRef, currentUser);
+                transaction.set(currentVoteDocRef, currentVote);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                db.runTransaction(new Transaction.Function<Void>() {
+                    // тут нас надо только обновить Votes добавив новое значение
+                    @Nullable
+                    @Override
+                    public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        String voteUUID = vote.getVoteUUID();
+
+                        DocumentReference currentVoteDocRef = db
+                                .collection("Votes").document(vote.getVoteUUID());
+                        Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
+                        List<VoteVariant> currentVoteVAriants = currentVote.getVoteVariants();
+
+                        VoteVariant currentVotedVariant = currentVoteVAriants.get(votedVariantID);
+                        currentVotedVariant.setVariantVoteStatus(currentVotedVariant.getVariantVoteStatus() + 1);
+
+
+                        transaction.set(currentVoteDocRef, currentVote);
+
+                        return null;
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        getVoteResult(vote);
+
+                        getMvpView().hideProgressbar();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        getMvpView().hideProgressbar();
+                        getMvpView().showTransactionError(e.getMessage());
+                    }
+                });
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                getMvpView().hideProgressbar();
+                getMvpView().showTransactionError(e.getMessage());
+            }
+        });
+
+    }
+
     // метод проверяет голосовал ли пользователь за этот опрос, получая список голосований пользователя и проверяя вхождение
     // строки voteUUID текущего голосования, и в зависимости от этого обновляет или создает голосование
     public void checkVoteStatus(final Vote vote, final int votedVariantID) {
@@ -300,14 +262,19 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
                                 if (userVotesList.isEmpty()) {
                                     voteForVariant(vote, votedVariantID);
                                 } else {
+                                    boolean hasVotes = false;
                                     for (UserVotes userVotes : userVotesList) {
-                                        if (userVotes.getVoteUUID().equals(voteUUID)) {
-                                            updateUserVotes(vote, votedVariantID);
-                                            break;
-                                        } else {
-                                            voteForVariant(vote, votedVariantID);
-                                        }
 
+                                        if (userVotes.getVoteUUID().equals(voteUUID)) {
+                                            hasVotes = true;
+                                        }
+//
+                                    }
+
+                                    if (hasVotes) {
+                                        updateUserVotes(vote, votedVariantID);
+                                    } else {
+                                        voteForVariant(vote, votedVariantID);
                                     }
                                 }
 
@@ -317,4 +284,41 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
                 });
 
     }
+
+    public void getVoteResult(Vote vote) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference currentVoteDocRef = db
+                .collection("Votes").document(vote.getVoteUUID());
+
+        currentVoteDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                Vote vote = documentSnapshot.toObject(Vote.class);
+
+                List<VoteVariant> voteVariantList = vote.getVoteVariants();
+
+                ArrayList<PieEntry> entries = new ArrayList<>();
+
+
+                for (VoteVariant voteVariant : voteVariantList) {
+                    int a = voteVariant.getVariantVoteStatus();
+                    float b = a;
+                    String c = String.valueOf(voteVariant.getVariantId()) + ". " + voteVariant.getVariantName();
+
+                    entries.add(new PieEntry(b, c));
+
+                }
+
+                getMvpView().showChart(entries);
+
+            }
+        });
+
+
+    }
+
+
 }

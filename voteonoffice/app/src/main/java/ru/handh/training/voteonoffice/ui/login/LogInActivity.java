@@ -16,7 +16,7 @@ import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.signup.SignUpActivity;
 import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
-public class LogInActivity extends BaseActivity implements View.OnClickListener , LogInMvpView{
+public class LogInActivity extends BaseActivity implements View.OnClickListener, LogInMvpView {
 
     @Inject
     LogInPresenter logInPresenter;
@@ -121,7 +121,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
-    public void showLoginSuccess(){
+    public void showLoginSuccess() {
         startActivity(new Intent(this, VoteListActivity.class));
     }
 }

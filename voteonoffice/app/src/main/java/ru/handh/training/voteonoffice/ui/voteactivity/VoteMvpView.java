@@ -1,5 +1,8 @@
 package ru.handh.training.voteonoffice.ui.voteactivity;
 
+import com.github.mikephil.charting.data.PieEntry;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.handh.training.voteonoffice.data.votesmodel.VoteVariant;
@@ -15,5 +18,6 @@ public interface VoteMvpView extends MvpView {
 
     void showProgressbar();
     void hideProgressbar();
-    // тестовый метод чтобы понять что мне отдает запрос
+
+    void showChart(ArrayList<PieEntry> entries);
 }

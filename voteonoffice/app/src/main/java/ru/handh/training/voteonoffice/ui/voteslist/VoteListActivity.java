@@ -34,7 +34,8 @@ import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
 
 public class VoteListActivity extends BaseActivity implements View.OnClickListener, VoteListMvpView, VoteListAdapter.VoteClickListener {
 
-    @Inject VoteListPresenter voteListPresenter;
+    @Inject
+    VoteListPresenter voteListPresenter;
     VoteListAdapter voteListAdapter;
 
     RecyclerView recyclerViewVotes;
@@ -53,7 +54,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_vote_list);
 
         buttonAddVote = findViewById(R.id.buttonAddVote);
-        buttonEditUserRole= findViewById(R.id.buttonEditUserRole);
+        buttonEditUserRole = findViewById(R.id.buttonEditUserRole);
         buttonAddVote.setOnClickListener(this);
         buttonEditUserRole.setOnClickListener(this);
 
@@ -121,7 +122,6 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
                 startActivity(new Intent(this, LogInActivity.class));
                 break;
         }
-
 
 
     }

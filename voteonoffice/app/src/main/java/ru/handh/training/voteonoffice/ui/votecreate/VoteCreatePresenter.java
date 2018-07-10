@@ -30,7 +30,7 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
             return;
         }
 
-        if (voteVariantList.size() < 2){
+        if (voteVariantList.size() < 2) {
             getMvpView().showVariantsIsEmptyError();
             return;
         }
@@ -44,7 +44,6 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
 
         //String voteUUID = UUID.randomUUID().toString().replaceAll("-", "");
         String voteUUID = UUID.randomUUID().toString();
-
 
 
         if (voteDescription == null) {

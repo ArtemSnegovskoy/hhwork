@@ -13,7 +13,7 @@ import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.login.LogInActivity;
 
-public class SignUpActivity extends BaseActivity implements View.OnClickListener , SignUpMvpView{
+public class SignUpActivity extends BaseActivity implements View.OnClickListener, SignUpMvpView {
 
     @Inject
     SignUpPresenter signUpPresenter;
@@ -21,7 +21,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     ProgressBar progressBar;
     EditText editTextEmail, editTextPassword;
 
-   // private FirebaseAuth firebaseAuth;
+    // private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.buttonSignUp:
                 signUpPresenter.registerUser(editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim());
-               // registerUser();
+                // registerUser();
                 //signUpPresenter.addDbUser(editTextEmail.getText().toString().trim());
                 break;
 

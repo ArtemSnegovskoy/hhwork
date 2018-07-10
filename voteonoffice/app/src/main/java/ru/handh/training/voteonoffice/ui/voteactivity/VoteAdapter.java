@@ -14,7 +14,7 @@ import java.util.List;
 import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.data.votesmodel.VoteVariant;
 
-public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder>{
+public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder> {
 
     private List<VoteVariant> voteVariantsList;
 
@@ -22,14 +22,14 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
 
     int checkBoxSelected;
 
-    public VoteAdapter(Context context, List<VoteVariant> voteVariantsList){
-            this.context = context;
-            this.voteVariantsList = voteVariantsList;
-            this.checkBoxSelected = -1;
+    public VoteAdapter(Context context, List<VoteVariant> voteVariantsList) {
+        this.context = context;
+        this.voteVariantsList = voteVariantsList;
+        this.checkBoxSelected = -1;
     }
 
 
-    public class VoteViewHolder extends RecyclerView.ViewHolder{
+    public class VoteViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewVoteDescription;
         CheckBox checkBoxVote;
@@ -43,13 +43,13 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
 
         }
 
-        public void bindVariant(int position, VoteVariant voteVariant){
+        public void bindVariant(int position, VoteVariant voteVariant) {
             textViewVoteDescription.setText(voteVariant.getVariantName());
 
             // обнуляю слушатель чтобы после checkBoxVote.setChecked не
             checkBoxVote.setOnCheckedChangeListener(null);
 
-            if(position != checkBoxSelected){
+            if (position != checkBoxSelected) {
                 checkBoxVote.setChecked(false);
             } else {
                 checkBoxVote.setChecked(true);
@@ -61,7 +61,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
                     if (isChecked) {
 
                         checkBoxSelected = getAdapterPosition();
-                    } else if(checkBoxSelected == getAdapterPosition()) {
+                    } else if (checkBoxSelected == getAdapterPosition()) {
                         checkBoxSelected = -1;
 
                     }
@@ -70,7 +70,6 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
 
                 }
             });
-
 
 
         }
@@ -96,9 +95,9 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
         return voteVariantsList.size();
     }
 
-    public boolean checkBoxChekedStatus(){
+    public boolean checkBoxChekedStatus() {
 
-        if (checkBoxSelected == -1){
+        if (checkBoxSelected == -1) {
             return false;
         } else {
             return true;

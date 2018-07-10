@@ -12,7 +12,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,6 +69,11 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
         voteAdapter = new VoteAdapter(this, voteVariantsList);
         recyclerViewVariantList.setAdapter(voteAdapter);
         recyclerViewVariantList.setLayoutManager(new LinearLayoutManager(this));
+
+        votePresenter.getVoteResult(vote);
+
+
+
     }
 
     @Override
@@ -127,6 +139,37 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void showChart(ArrayList<PieEntry> entries) {
+
+        chart = findViewById(R.id.chart);
+
+        chart.setRotationEnabled(true);
+        chart.setUsePercentValues(true);
+        chart.setDescription(null);
+        chart.setCenterText(getString(R.string.vote_result));
+        chart.setCenterTextSize(10);
+
+        Legend l = chart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7);
+        l.setYEntrySpace(5);
+
+
+
+        PieDataSet pieDataSet = new PieDataSet(entries, "");
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(14);
+        pieDataSet.setValueFormatter(new PercentFormatter());
+        pieDataSet.setValueTextColor(Color.BLACK);
+
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        PieData pieData = new PieData(pieDataSet);
+        chart.setData(pieData);
+        chart.invalidate();
+
+    }
 
 
 }

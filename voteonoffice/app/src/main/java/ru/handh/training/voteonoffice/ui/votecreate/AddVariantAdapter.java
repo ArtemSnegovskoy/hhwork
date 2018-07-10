@@ -35,7 +35,6 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
             super(itemView);
 
 
-
             editTextVariant = itemView.findViewById(R.id.editTextVariant);
             imageVariantImg = itemView.findViewById(R.id.imageVariantImg);
             imageDeleteVariant = itemView.findViewById(R.id.imageDeleteVariant);
