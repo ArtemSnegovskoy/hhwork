@@ -110,11 +110,8 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.buttonAddVote:
 
-                finish();
                 startActivity(new Intent(this, VoteCreateActivity.class));
-
                 break;
-
             case R.id.buttonEditUserRole:
 
 

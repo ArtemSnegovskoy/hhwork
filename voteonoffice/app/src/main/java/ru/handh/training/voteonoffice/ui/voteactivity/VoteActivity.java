@@ -66,9 +66,10 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-
+        // проверка на выбранный вариант
         if (voteAdapter.checkBoxChekedStatus()){
-            votePresenter.voteForVariant(vote, voteAdapter.checkBoxSelected);
+            //проверка на то, голосовал ли пользователь за этот опрос
+            votePresenter.checkVoteStatus(vote, voteAdapter.checkBoxSelected);
         } else {
             showErrorVote();
         }
