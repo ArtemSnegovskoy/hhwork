@@ -128,7 +128,7 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
             @Override
             public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
 
-                int oldVariantIndex = 0;
+                //int oldVariantIndex = 0;
                 int oldVariantId = 0;
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -146,26 +146,24 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
                         .collection("Votes").document(voteUUID);
                 Vote currentVote = transaction.get(currentVoteDocRef).toObject(Vote.class);
 
+                List<VoteVariant> currentVotedVariants = currentVote.getVoteVariants();
+
+
                 boolean hasUUID = false;
 
                 for (UserVotes userVotes : currentUserVotes) {
                     if (userVotes.getVoteUUID().equals(voteUUID)) {
                         hasUUID = true;
-                        oldVariantIndex = currentUserVotes.indexOf(userVotes);
+                        //oldVariantIndex = currentUserVotes.indexOf(userVotes);
                         oldVariantId = userVotes.getVoteVariantID();
                         break;
-
-                    }
-
-                    if (hasUUID) {
-                        // вычитаем старый вариант голосования
-                        UserVotes oldVariant = currentUserVotes.get(oldVariantIndex);
-                        List<VoteVariant> currentVoteVariants = currentVote.getVoteVariants();
-                        VoteVariant oldVotedVariant = currentVoteVariants.get(oldVariantId);
-                        oldVotedVariant.setVariantVoteStatus(oldVotedVariant.getVariantVoteStatus() - 1);
                     }
                 }
 
+                if (hasUUID) {
+                    VoteVariant oldVariant = currentVotedVariants.get(oldVariantId);
+                    oldVariant.setVariantVoteStatus(oldVariant.getVariantVoteStatus() - 1);
+                }
 
                 UserVotes currentUserVote = new UserVotes(vote.getVoteUUID(), votedVariantID);
                 // добавляем новый объект в список и ищем совпадение UUID, его надо заменить
@@ -306,7 +304,7 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
                 for (VoteVariant voteVariant : voteVariantList) {
                     int a = voteVariant.getVariantVoteStatus();
                     float b = a;
-                    String c = String.valueOf(voteVariant.getVariantId()) + ". " + voteVariant.getVariantName();
+                    String c = String.valueOf(voteVariant.getVariantId() + " (" + voteVariant.getVariantVoteStatus() +")");
 
                     entries.add(new PieEntry(b, c));
 

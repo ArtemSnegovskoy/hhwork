@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="@string/for_creating_vote_add_title_and_some_variants" />
+        android:text="@string/for_creating_vote_add_title_and_some_variants"
+        android:textSize="22dp"/>
     
     <EditText
         android:id="@+id/editTitle"
@@ -20,8 +21,10 @@
         android:layout_below="@id/textViewAnnotation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:maxLength="20"/>
+        android:padding="6dp"
+        android:maxLength="20"
+        android:textSize="22dp"
+        android:background="@drawable/edit_text_style"/>
     <EditText
         android:id="@+id/editDescription"
         android:hint="@string/description"
@@ -29,8 +32,10 @@
         android:layout_below="@id/editTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:maxLength="100"/>
+        android:padding="6dp"
+        android:maxLength="100"
+        android:textSize="22dp"
+        android:background="@drawable/edit_text_style"/>
     <Button
         android:id="@+id/buttonAddVariant"
         android:layout_below="@+id/editDescription"

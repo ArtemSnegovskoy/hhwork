@@ -69,7 +69,7 @@ public class VoteCreateActivity extends BaseActivity implements View.OnClickList
             case R.id.buttonAddVariant:
 
                 VoteVariant voteVariant = new VoteVariant();
-                addVariantAdapter.addItemVariant(voteVariant);
+                addVariantAdapter.addItemVariant(addVariantAdapter.getItemCount() , voteVariant);
 
                 break;
 

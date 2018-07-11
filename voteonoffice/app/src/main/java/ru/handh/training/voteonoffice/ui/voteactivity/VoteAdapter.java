@@ -44,7 +44,13 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
         }
 
         public void bindVariant(int position, VoteVariant voteVariant) {
-            textViewVoteDescription.setText(voteVariant.getVariantName());
+
+            if (voteVariant.getVariantName().isEmpty()) {
+                textViewVoteDescription.setText(String.valueOf(voteVariant.getVariantId()));
+            } else {
+
+                textViewVoteDescription.setText(voteVariant.getVariantName());
+            }
 
             // обнуляю слушатель чтобы после checkBoxVote.setChecked не
             checkBoxVote.setOnCheckedChangeListener(null);

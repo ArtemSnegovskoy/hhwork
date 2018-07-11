@@ -25,6 +25,8 @@
             android:padding="6dp"
             android:layout_toLeftOf="@+id/checkboxVariat"
             android:layout_toRightOf="@+id/imageVariantImg"
+            android:textSize="22dp"
+            android:background="@drawable/edit_text_style"
             />
 
         <CheckBox

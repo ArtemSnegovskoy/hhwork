@@ -45,14 +45,12 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
 
 
         public void bindVariant(int position, VoteVariant voteVariant) {
-            // введеный в поле текст при добавлении варианта заменяется на 1 2 3 исправить
             editTextVariant = itemView.findViewById(R.id.editTextVariant);
             mVoteVariant = voteVariant;
-            //String variantPosition = String.valueOf(position + 1) + editTextVariant.getText().toString();
 
-            //editTextVariant.setText(variantPosition);
             voteVariant.setVariantId(position + 1);
             voteVariant.setVariantName(editTextVariant.getText().toString().trim());
+            //voteVariantsList.add(position, voteVariant);
 
         }
 
@@ -72,12 +70,14 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
     public AddVariantAdapter.AddVariantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_variant, parent, false);
+
         return new AddVariantViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(AddVariantAdapter.AddVariantViewHolder addVariantViewHolder, int position) {
         VoteVariant voteVariant = voteVariantsList.get(position);
+
         addVariantViewHolder.bindVariant(position, voteVariant);
 
     }
@@ -87,8 +87,8 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
         return voteVariantsList.size();
     }
 
-    public void addItemVariant(VoteVariant voteVariant) {
-        voteVariantsList.add(voteVariant);
+    public void addItemVariant(int index,VoteVariant voteVariant) {
+        voteVariantsList.add(index, voteVariant);
         notifyDataSetChanged();
     }
 

@@ -25,7 +25,8 @@
         android:padding="6dp"
         android:layout_toLeftOf="@+id/checkboxVote"
         android:layout_toRightOf="@+id/imageVariantImg"
-        android:hint="Здесь находится описание варианта"
+        android:hint="Здесь находится описание варианта и если его видно - нужно исправить VoteAdapter"
+
         />
 
     <CheckBox
