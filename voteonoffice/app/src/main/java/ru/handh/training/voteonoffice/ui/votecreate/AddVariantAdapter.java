@@ -1,6 +1,8 @@
 package ru.handh.training.voteonoffice.ui.votecreate;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,25 +47,51 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
 
 
         public void bindVariant(int position, VoteVariant voteVariant) {
-            editTextVariant = itemView.findViewById(R.id.editTextVariant);
-            mVoteVariant = voteVariant;
+            // вроде работает как задумано.
+            mVoteVariant = voteVariantsList.get(position);
 
             voteVariant.setVariantId(position + 1);
-            voteVariant.setVariantName(editTextVariant.getText().toString().trim());
-            //voteVariantsList.add(position, voteVariant);
+            editTextVariant.setText(mVoteVariant.getVariantName());
+            editTextVariant.addTextChangedListener(new TextWatcher() {
+
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (mVoteVariant.getVariantId()-1 == position);{
+                        mVoteVariant.setVariantName(s.toString());
+                    }
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+            //voteVariant.setVariantName(editTextVariant.getText().toString().trim());
+            //editTextVariant.setText(voteVariant.getVariantName());
 
         }
 
         @Override
         public void onClick(View v) {
-            removeItem(getPosition());
+            removeItem(getAdapterPosition());
         }
     }
 
     private void removeItem(int position) {
         voteVariantsList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, voteVariantsList.size());
+
+        notifyDataSetChanged();
+//        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, voteVariantsList.size());
     }
 
     @Override
@@ -88,12 +116,12 @@ public class AddVariantAdapter extends RecyclerView.Adapter<AddVariantAdapter.Ad
     }
 
     public void addItemVariant(int index,VoteVariant voteVariant) {
+        //voteVariant.setVariantId(index+1);
         voteVariantsList.add(index, voteVariant);
         notifyDataSetChanged();
     }
 
     public List<VoteVariant> getVariants() {
-
         return voteVariantsList;
 
     }

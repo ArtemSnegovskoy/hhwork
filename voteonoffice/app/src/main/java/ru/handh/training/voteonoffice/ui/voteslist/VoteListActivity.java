@@ -99,6 +99,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getApplicationContext(), "Error getting data!!!", Toast.LENGTH_LONG).show();
+                        hideProgressbar();
                     }
                 });
 
