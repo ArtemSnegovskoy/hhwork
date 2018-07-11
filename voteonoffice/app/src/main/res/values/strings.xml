@@ -24,8 +24,8 @@
 
     <string name="login">Login</string>
     <string name="don_t_have_account_sign_up">Don\'t have account? Sign Up</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
     <string name="sign_up">Sign Up</string>
     <string name="already_have_an_account_login">Already have an account? Login</string>
     <string name="for_creating_vote_add_title_and_some_variants">For creating vote add title and some variants</string>
