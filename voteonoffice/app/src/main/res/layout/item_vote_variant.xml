@@ -17,19 +17,20 @@
 
 
     <TextView
-        android:id="@+id/textViewUserVoteDescription"
+        android:id="@+id/textViewVariantDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/imageVariantImg"
         android:padding="6dp"
-        android:layout_toLeftOf="@+id/checkboxVariat"
+        android:layout_toLeftOf="@+id/checkboxVote"
         android:layout_toRightOf="@+id/imageVariantImg"
-        android:hint="Здесь находится описание варианта"
+        android:hint="Здесь находится описание варианта и если его видно - нужно исправить VoteAdapter"
+
         />
 
     <CheckBox
-        android:id="@+id/checkboxUserVote"
+        android:id="@+id/checkboxVote"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"

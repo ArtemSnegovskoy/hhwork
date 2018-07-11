@@ -24,8 +24,8 @@
 
     <string name="login">Login</string>
     <string name="don_t_have_account_sign_up">Don\'t have account? Sign Up</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
     <string name="sign_up">Sign Up</string>
     <string name="already_have_an_account_login">Already have an account? Login</string>
     <string name="for_creating_vote_add_title_and_some_variants">For creating vote add title and some variants</string>
@@ -38,6 +38,12 @@
     <string name="vote">Vote</string>
     <string name="edit_user_role">Edit User role</string>
     <string name="change_role">Change role</string>
+    <string name="error_select_var">Please select variant</string>
+    <string name="vote_result">Result of vote</string>
+    <string name="error_lower_case">Password must contain at least one letter in lower case</string>
+    <string name="error_upper_case">Password must contain at least one letter in upper case</string>
+    <string name="error_number_contain">Password must contain at least one number</string>
+    <string name="error_letter_contain">Password must contain at least one number and at least one letter</string>
 
 
 </resources>

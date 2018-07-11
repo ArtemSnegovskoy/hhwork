@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="6dp">
 
     <TextView
         android:id="@+id/textViewVoteActivityTitle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Vote Title"/>
+        android:hint="Vote Title"
+        android:layout_centerHorizontal="true"
+        android:textSize="24dp"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
         android:layout_below="@id/textViewVoteActivityTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true">
 
 
     </com.github.mikephil.charting.charts.PieChart>
@@ -21,9 +25,9 @@
     <TextView
         android:id="@+id/textViewVoteActivityDescription"
         android:layout_below="@+id/chart"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Vote Description"/>
+        android:layout_centerHorizontal="true"/>
 
 
 

@@ -22,9 +22,11 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/imageVariantImg"
         android:padding="6dp"
+        android:textSize="22dp"
         android:layout_toLeftOf="@+id/imageDeleteVariant"
         android:layout_toRightOf="@+id/imageVariantImg"
-         />
+        android:maxLength="100"
+        android:background="@drawable/edit_text_style"/>
 
     <ImageView
         android:id="@+id/imageDeleteVariant"

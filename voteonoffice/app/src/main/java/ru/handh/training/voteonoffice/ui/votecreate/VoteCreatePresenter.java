@@ -1,17 +1,8 @@
 package ru.handh.training.voteonoffice.ui.votecreate;
 
-import android.support.annotation.NonNull;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +30,11 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
             return;
         }
 
+        if (voteVariantList.size() < 2) {
+            getMvpView().showVariantsIsEmptyError();
+            return;
+        }
+
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         // добавить генерацию айди и прочей херни и поправить конструктор
@@ -48,7 +44,6 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
 
         //String voteUUID = UUID.randomUUID().toString().replaceAll("-", "");
         String voteUUID = UUID.randomUUID().toString();
-
 
 
         if (voteDescription == null) {
@@ -63,38 +58,26 @@ public class VoteCreatePresenter extends BasePresenter<VoteCreateMvpView> {
 
         getMvpView().showProgressbar();
 
-        // этот способ записи в базу данных генерирует айди voteUUID по которому я могу получить документ
-        dbVotes.document(voteUUID).set(vote).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                getMvpView().hideProgressbar();
-                getMvpView().showAddVoteSuccess();
+        dbVotes.document(voteUUID).set(vote);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().hideProgressbar();
-                getMvpView().showAddVoteFailed(e.getMessage());
-
-            }
-        });
-            // этот способ записи в базу гененрирует для докуменат свой айди, которого я не знаю
-//        dbVotes.add(vote)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//        .addOnSuccessListener(new OnSuccessListener<Void>() {
 //            @Override
-//            public void onSuccess(DocumentReference documentReference) {
-//                getMvpView().hideProgressbar();
+//            public void onSuccess(Void aVoid) {
 //                getMvpView().showAddVoteSuccess();
+//                //getMvpView().hideProgressbar();
+//
 //            }
 //        })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        getMvpView().hideProgressbar();
-//                        getMvpView().showAddVoteFailed(e.getMessage());
-//                    }
-//                });
+//        .addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                getMvpView().showAddVoteFailed(e.getMessage());
+//                //getMvpView().hideProgressbar();
+//            }
+//        });
+//
+//        getMvpView().hideProgressbar();
+
 
     }
 

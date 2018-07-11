@@ -2,30 +2,18 @@ package ru.handh.training.voteonoffice.ui.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.login.LogInActivity;
-import ru.handh.training.voteonoffice.ui.main.MainActivity;
-import ru.handh.training.voteonoffice.ui.signup.SignUpMvpView;
-import ru.handh.training.voteonoffice.ui.signup.SignUpPresenter;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-
-import javax.inject.Inject;
-
-public class SignUpActivity extends BaseActivity implements View.OnClickListener , SignUpMvpView{
+public class SignUpActivity extends BaseActivity implements View.OnClickListener, SignUpMvpView {
 
     @Inject
     SignUpPresenter signUpPresenter;
@@ -33,7 +21,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     ProgressBar progressBar;
     EditText editTextEmail, editTextPassword;
 
-   // private FirebaseAuth firebaseAuth;
+    // private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +52,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.buttonSignUp:
                 signUpPresenter.registerUser(editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim());
-               // registerUser();
+                // registerUser();
                 //signUpPresenter.addDbUser(editTextEmail.getText().toString().trim());
                 break;
 
             case R.id.textViewLogin:
-                finish();
                 startActivity(new Intent(this, LogInActivity.class));
                 break;
         }
@@ -126,6 +113,24 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     public void showSignUpFailed(String errorMessage) {
         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void showPasswordNoLetterError() {
+        editTextPassword.setError(getText(R.string.error_letter_contain));
+        editTextPassword.requestFocus();
+    }
+
+    @Override
+    public void showPasswordOnlyLowerCaseError() {
+        editTextPassword.setError(getText(R.string.error_upper_case));
+        editTextPassword.requestFocus();
+    }
+
+    @Override
+    public void showPasswordOnlyUpperCaseError() {
+        editTextPassword.setError(getText(R.string.error_lower_case));
+        editTextPassword.requestFocus();
     }
 }
 

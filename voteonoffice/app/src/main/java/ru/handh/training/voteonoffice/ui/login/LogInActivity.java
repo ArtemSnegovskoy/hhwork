@@ -1,30 +1,23 @@
 package ru.handh.training.voteonoffice.ui.login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import ru.handh.training.voteonoffice.R;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
+import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
 import ru.handh.training.voteonoffice.ui.signup.SignUpActivity;
-import ru.handh.training.voteonoffice.ui.signup.SignUpPresenter;
-import ru.handh.training.voteonoffice.ui.votecreate.VoteCreateActivity;
 import ru.handh.training.voteonoffice.ui.voteslist.VoteListActivity;
 
-public class LogInActivity extends BaseActivity implements View.OnClickListener , LogInMvpView{
+public class LogInActivity extends BaseActivity implements View.OnClickListener, LogInMvpView {
 
     @Inject
     LogInPresenter logInPresenter;
@@ -52,6 +45,9 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.textViewSignup).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);
 
+        setTitle("Авторизация");
+        setTitleColor(Color.GRAY);
+
     }
 
     @Override
@@ -61,7 +57,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
         if (firebaseAuth.getCurrentUser() != null) {
             //временная заглушка до появления списка голосований
             //Toast.makeText(getApplicationContext(), "Запомнили логин", Toast.LENGTH_SHORT).show();
-
+            finish();
             startActivity(new Intent(this, VoteListActivity.class));
         }
     }
@@ -76,7 +72,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
             case R.id.buttonLogin:
                 logInPresenter.userLogin(editTextEmail.getText().toString().trim(), editTextPassword.getText().toString().trim());
-//
+
 //                finish();
 //                startActivity(new Intent(this, VoteListActivity.class));
                 break;
@@ -129,7 +125,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
-    public void showLoginSuccess(){
+    public void showLoginSuccess() {
         startActivity(new Intent(this, VoteListActivity.class));
     }
 }

@@ -1,23 +1,17 @@
 package ru.handh.training.voteonoffice.ui.voteslist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.handh.training.voteonoffice.R;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
-import ru.handh.training.voteonoffice.ui.voteactivity.VoteActivity;
 
 public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteListViewHolder> {
 
@@ -48,7 +42,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
         public void bindVote(int position, final Vote vote) {
 
 
-            if (vote.isVoteStatus() == true){
+            if (vote.isVoteStatus() == true) {
                 imageVoteStatus.setImageResource(R.drawable.ic_done_black_36dp);
             }
 
@@ -58,13 +52,12 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(clickListener != null) {
+                    if (clickListener != null) {
                         clickListener.onItemClick(vote);
                     }
 
                 }
             });
-
 
 
         }
@@ -92,7 +85,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.VoteLi
 
     public interface VoteClickListener {
 
-        void onItemClick (Vote vote);
+        void onItemClick(Vote vote);
 
     }
 

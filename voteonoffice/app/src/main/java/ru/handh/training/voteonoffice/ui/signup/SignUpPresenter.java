@@ -2,8 +2,6 @@ package ru.handh.training.voteonoffice.ui.signup;
 
 import android.support.annotation.NonNull;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,36 +19,63 @@ import javax.inject.Inject;
 import ru.handh.training.voteonoffice.data.usermodel.User;
 import ru.handh.training.voteonoffice.data.usermodel.UserVotes;
 import ru.handh.training.voteonoffice.ui.base.BasePresenter;
-import ru.handh.training.voteonoffice.ui.signup.SignUpMvpView;
 
 public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
     @Inject
     public SignUpPresenter() {
     }
 
-    public void registerUser(final String email, String password){
+    public void registerUser(final String email, String password) {
 
-            if (email.isEmpty()) {
-                getMvpView().showEmailEmptyError();
-                return;
-            }
+        if (email.isEmpty()) {
+            getMvpView().showEmailEmptyError();
+            return;
+        }
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                getMvpView().showEmailIncorrectError();
-                return;
-            }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            getMvpView().showEmailIncorrectError();
+            return;
+        }
 
-            if (password.isEmpty()) {
-                getMvpView().showPasswordEmptyError();
-                return;
-            }
+        if (password.isEmpty()) {
+            getMvpView().showPasswordEmptyError();
+            return;
+        }
 
-            if (password.length() < 6) {
-                getMvpView().showPasswordLenghtError();
-                return;
-            }
+        if (password.length() < 6) {
+            getMvpView().showPasswordLenghtError();
+            return;
+        }
 
-            getMvpView().showProgressbar();
+        if(password.matches("[a-zA-Z]{1,}")){
+            getMvpView().showPasswordNoLetterError();
+            return;
+        }
+
+        if(password.matches("[0-9]{1,}")){
+            getMvpView().showPasswordNoLetterError();
+            return;
+        }
+
+
+
+        String passwordLowerCase = password.toLowerCase();
+        String passwordUpperCase = password.toUpperCase();
+
+        if (password.equals(passwordLowerCase)) {
+            getMvpView().showPasswordOnlyLowerCaseError();
+            return;
+        }
+
+        if (password.equals(passwordUpperCase)) {
+            getMvpView().showPasswordOnlyUpperCaseError();
+            return;
+        }
+
+
+
+
+        getMvpView().showProgressbar();
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -81,12 +106,9 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
         });
 
 
-
-
-
     }
 
-    public void addDbUser (String userEmail) {
+    public void addDbUser(String userEmail) {
         // при создании нового пользователя добавляем его в таблицу Users для раздачи ролей и запоминания голосований
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -101,7 +123,6 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
 //        dbUsers.add(user);
         // добавляем юзера, вместо айди емейл
         dbUsers.document(userEmail).set(user);
-
 
 
     }
