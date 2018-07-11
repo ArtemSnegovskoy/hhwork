@@ -44,6 +44,8 @@
     <string name="error_upper_case">Password must contain at least one letter in upper case</string>
     <string name="error_number_contain">Password must contain at least one number</string>
     <string name="error_letter_contain">Password must contain at least one number and at least one letter</string>
+    <string name="error_get_data">Error getting data!!!</string>
+    <string name="no_votes">No one voted yet</string>
 
 
 </resources>

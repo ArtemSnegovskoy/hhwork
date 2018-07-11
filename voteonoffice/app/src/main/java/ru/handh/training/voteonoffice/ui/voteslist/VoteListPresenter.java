@@ -11,7 +11,5 @@ public class VoteListPresenter extends BasePresenter<VoteListMvpView> {
     public VoteListPresenter() {
 
     }
-
-
 }
 

@@ -72,6 +72,8 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
 
         votePresenter.getVoteResult(vote);
 
+        showProgressbar();
+
 
 
     }
@@ -142,13 +144,19 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void showChart(ArrayList<PieEntry> entries) {
 
+        if (entries == null){
+            chart.setCenterTextSize(18);
+            chart.setCenterText(getString(R.string.no_votes));
+        } else {
+            chart.setCenterText(getString(R.string.vote_result));
+            chart.setCenterTextSize(10);
+        }
+
         chart = findViewById(R.id.chart);
 
         chart.setRotationEnabled(true);
         chart.setUsePercentValues(true);
         chart.setDescription(null);
-        chart.setCenterText(getString(R.string.vote_result));
-        chart.setCenterTextSize(10);
 
         Legend l = chart.getLegend();
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
@@ -168,6 +176,7 @@ public class VoteActivity extends BaseActivity implements View.OnClickListener, 
         PieData pieData = new PieData(pieDataSet);
         chart.setData(pieData);
         chart.invalidate();
+        hideProgressbar();
 
     }
 

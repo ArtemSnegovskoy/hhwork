@@ -69,6 +69,8 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
 
         showProgressbar();
 
+
+
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         // отсортировал голосования, самые новые - наверху
         firebaseFirestore.collection("Votes").orderBy("voteDate").get()
@@ -98,7 +100,7 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error getting data!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.error_get_data, Toast.LENGTH_LONG).show();
                         hideProgressbar();
                     }
                 });

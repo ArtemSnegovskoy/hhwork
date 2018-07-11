@@ -300,14 +300,20 @@ public class VotePresenter extends BasePresenter<VoteMvpView> {
 
                 ArrayList<PieEntry> entries = new ArrayList<>();
 
+                int votesCount = 0;
 
                 for (VoteVariant voteVariant : voteVariantList) {
                     int a = voteVariant.getVariantVoteStatus();
+                    votesCount = votesCount + a;
                     float b = a;
                     String c = String.valueOf(voteVariant.getVariantId() + " (" + voteVariant.getVariantVoteStatus() +")");
 
                     entries.add(new PieEntry(b, c));
 
+                }
+
+                if (votesCount == 0) {
+                    entries = null;
                 }
 
                 getMvpView().showChart(entries);
