@@ -22,5 +22,9 @@ public interface SignUpMvpView extends MvpView {
 
     void showSignUpFailed(String errorMessage);
 
+    void showPasswordNoLetterError();
 
+    void showPasswordOnlyLowerCaseError();
+
+    void showPasswordOnlyUpperCaseError();
 }

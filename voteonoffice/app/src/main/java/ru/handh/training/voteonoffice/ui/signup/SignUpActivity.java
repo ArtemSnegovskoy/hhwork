@@ -114,6 +114,24 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
 
     }
+
+    @Override
+    public void showPasswordNoLetterError() {
+        editTextPassword.setError(getText(R.string.error_letter_contain));
+        editTextPassword.requestFocus();
+    }
+
+    @Override
+    public void showPasswordOnlyLowerCaseError() {
+        editTextPassword.setError(getText(R.string.error_upper_case));
+        editTextPassword.requestFocus();
+    }
+
+    @Override
+    public void showPasswordOnlyUpperCaseError() {
+        editTextPassword.setError(getText(R.string.error_lower_case));
+        editTextPassword.requestFocus();
+    }
 }
 
 

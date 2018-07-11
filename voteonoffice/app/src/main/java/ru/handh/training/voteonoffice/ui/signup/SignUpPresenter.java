@@ -47,6 +47,34 @@ public class SignUpPresenter extends BasePresenter<SignUpMvpView> {
             return;
         }
 
+        if(password.matches("[a-zA-Z]{1,}")){
+            getMvpView().showPasswordNoLetterError();
+            return;
+        }
+
+        if(password.matches("[0-9]{1,}")){
+            getMvpView().showPasswordNoLetterError();
+            return;
+        }
+
+
+
+        String passwordLowerCase = password.toLowerCase();
+        String passwordUpperCase = password.toUpperCase();
+
+        if (password.equals(passwordLowerCase)) {
+            getMvpView().showPasswordOnlyLowerCaseError();
+            return;
+        }
+
+        if (password.equals(passwordUpperCase)) {
+            getMvpView().showPasswordOnlyUpperCaseError();
+            return;
+        }
+
+
+
+
         getMvpView().showProgressbar();
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
