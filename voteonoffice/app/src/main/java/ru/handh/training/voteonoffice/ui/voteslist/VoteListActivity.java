@@ -11,20 +11,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
 import ru.handh.training.voteonoffice.R;
 import ru.handh.training.voteonoffice.data.votesmodel.Vote;
 import ru.handh.training.voteonoffice.ui.base.BaseActivity;
@@ -63,47 +56,50 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
 
         votesList = new ArrayList<>();
 
-        voteListAdapter = new VoteListAdapter(this, votesList);
-        voteListAdapter.setClickListener(this);
-        recyclerViewVotes.setAdapter(voteListAdapter);
+        voteListPresenter.getVoteData();
+//        voteListAdapter = new VoteListAdapter(this, votesList);
+//        voteListAdapter.setClickListener(this);
+//        recyclerViewVotes.setAdapter(voteListAdapter);
 
         showProgressbar();
 
+        //TODO вынести метод в презентер, подсветить проголосованное в списке
 
 
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        // отсортировал голосования, самые новые - наверху
-        firebaseFirestore.collection("Votes").orderBy("voteDate").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                        hideProgressbar();
-
-                        if (!queryDocumentSnapshots.isEmpty()) {
-
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                            for (DocumentSnapshot d : list) {
-
-                                Vote vote = d.toObject(Vote.class);
-                                votesList.add(vote);
-
-                            }
-                            Collections.reverse(votesList);
-                            voteListAdapter.notifyDataSetChanged();
-
-                        }
-                    }
-                })
-
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), R.string.error_get_data, Toast.LENGTH_LONG).show();
-                        hideProgressbar();
-                    }
-                });
+//        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+//        // отсортировал голосования, самые новые - наверху
+//        firebaseFirestore.collection("Votes").orderBy("voteDate").get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//                        hideProgressbar();
+//
+//                        if (!queryDocumentSnapshots.isEmpty()) {
+//
+//                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+//
+//                            for (DocumentSnapshot d : list) {
+//
+//                                Vote vote = d.toObject(Vote.class);
+//                                votesList.add(vote);
+//
+//                            }
+//                            Collections.reverse(votesList);
+//                            voteListAdapter.notifyDataSetChanged();
+//
+//                        }
+//                    }
+//                })
+//
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getApplicationContext(), R.string.error_get_data, Toast.LENGTH_LONG).show();
+//                        hideProgressbar();
+//                    }
+//                });
 
 
     }
@@ -155,6 +151,22 @@ public class VoteListActivity extends BaseActivity implements View.OnClickListen
         if (dialogProgressBar != null && dialogProgressBar.isShowing()) {
             dialogProgressBar.dismiss();
         }
+    }
+
+    @Override
+    public void showErrorGetData(String errorMessage) {
+        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setAdapterData(List<Vote> votesList) {
+
+
+        voteListAdapter = new VoteListAdapter(this, votesList);
+        voteListAdapter.setClickListener(this);
+        recyclerViewVotes.setAdapter(voteListAdapter);
+        voteListAdapter.notifyDataSetChanged();
+
     }
 
     @Override
